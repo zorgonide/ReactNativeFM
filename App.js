@@ -1,20 +1,50 @@
-import { StatusBar } from 'expo-status-bar';
-import { StyleSheet, Text, View } from 'react-native';
+import React from "react";
+import { View, Text, StyleSheet, SafeAreaView } from "react-native";
+import SectionList from "./components/SectionList";
+import ColorBox from "./components/ColorBox";
+import FlatList from "./components/FlatList";
+import { NavigationContainer } from '@react-navigation/native';
 
-export default function App() {
+const App = () => {
   return (
-    <View style={styles.container}>
-      <Text>Open up App.js to start working on your app!</Text>
-      <StatusBar style="auto" />
-    </View>
+    <NavigationContainer>
+      <SafeAreaView style={styles.safeArea}>
+        {/* <Text style={[styles.baseText, styles.headingText]}>Here are some panels</Text> */}
+        {/* <ColorBox hexCode="#2aa198" colorName="Cyan" />
+        <ColorBox hexCode="#268bd2" colorName="Blue" />
+        <ColorBox hexCode="#d33682" colorName="Magenta" />
+        <ColorBox hexCode="#cb4b16" colorName="Orange" /> */}
+        <FlatList></FlatList>
+        {/* <SectionList></SectionList> */}
+      </SafeAreaView>
+    </NavigationContainer>
   );
-}
+};
 
 const styles = StyleSheet.create({
+
   container: {
-    flex: 1,
-    backgroundColor: '#fff',
-    alignItems: 'center',
-    justifyContent: 'center',
+    alignItems: "center",
+    justifyContent: "center",
+    marginVertical: 5,
+    marginHorizontal: 10,
+    paddingVertical: 15,
+    borderRadius: 10
   },
-});
+  safeArea: {
+    flex: 1,
+    marginTop: 40
+  },
+  baseText: {
+    fontWeight: "bold",
+    fontSize: 20,
+    color: "white"
+  },
+  headingText: {
+    color: "black",
+    textAlign: "left",
+    paddingHorizontal: 10
+  }
+})
+export default App;
+
