@@ -1,4 +1,4 @@
-import { View, Text, TouchableOpacity, StyleSheet, FlatList, SafeAreaView } from 'react-native'
+import { View, TouchableOpacity, SafeAreaView } from 'react-native'
 import React from 'react'
 import HomePanels from '../components/HomePanels';
 
@@ -40,15 +40,9 @@ const Home = ({ navigation }) => {
     return (
         <SafeAreaView style={{ backgroundColor: "white", flex: 1 }}>
             <View>
-                <TouchableOpacity onPress={() => navigation.navigate('ColorPalette', { paletteName: 'Solarized', colors: COLORS })}>
-                    <HomePanels scheme={COLORS} navigation={navigation} name='Solarized' />
-                </TouchableOpacity>
-                <TouchableOpacity onPress={() => navigation.navigate('ColorPalette', { paletteName: 'Solarized', colors: RAINBOW })}>
-                    <HomePanels scheme={RAINBOW} navigation={navigation} name='Rainbow' />
-                </TouchableOpacity>
-                <TouchableOpacity onPress={() => navigation.navigate('ColorPalette', { paletteName: 'Solarized', colors: FRONTEND_MASTERS })}>
-                    <HomePanels scheme={FRONTEND_MASTERS} navigation={navigation} name='Frontend Masters' />
-                </TouchableOpacity>
+                <HomePanels scheme={COLORS} navigation={navigation} name='Solarized' />
+                <HomePanels scheme={RAINBOW} navigation={navigation} name='Rainbow' />
+                <HomePanels scheme={FRONTEND_MASTERS} navigation={navigation} name='Frontend Masters' />
             </View>
         </SafeAreaView>
     )

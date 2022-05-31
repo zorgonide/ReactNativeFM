@@ -21,7 +21,12 @@ const styles = StyleSheet.create({
         marginVertical: 5,
         marginHorizontal: 10,
         paddingVertical: 15,
-        borderRadius: 10
+        borderRadius: 10,
+        shadowColor: '#000',
+        shadowOffset: { width: 0, height: 1 },
+        shadowOpacity: 0.3,
+        shadowRadius: 1,
+        elevation: 2,
     },
     boxText: {
         color: 'white',
