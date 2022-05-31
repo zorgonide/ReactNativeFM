@@ -20,7 +20,7 @@ const App = ({ colorList }) => {
             data={colorList}
             keyExtractor={item => item.colorName}
             renderItem={({ item }) => <ColorPanel hexCode={item.hexCode} colorName={item.colorName} dark={parseInt(item.hexCode.replace('#', ''), 16) > 0xffffff / 1.1} />}
-            ListHeaderComponent={() => <Text style={styles.altText}> Here are some panels</Text>}
+        // ListHeaderComponent={() => <Text style={styles.altText}> Here are some panels</Text>}
 
         />
     );
