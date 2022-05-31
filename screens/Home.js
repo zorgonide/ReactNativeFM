@@ -1,5 +1,6 @@
 import { View, Text, TouchableOpacity, StyleSheet, FlatList, SafeAreaView } from 'react-native'
 import React from 'react'
+import HomePanels from '../components/HomePanels';
 
 const COLORS = [
     { colorName: 'Base03', hexCode: '#002b36' },
@@ -52,46 +53,5 @@ const Home = ({ navigation }) => {
         </SafeAreaView>
     )
 }
-const Item = ({ title, colorCode }) => {
-    const bgColor = {
-        backgroundColor: colorCode
-    }
-    return (
-        <View style={[styles.panelItem, bgColor]}>
-
-        </View>
-    )
-};
-const HomePanels = ({ scheme, navigation, name }) => {
-    let count = 0;
-    const renderItem = ({ item }) => {
-        count++;
-        if (count < 6)
-            return (
-                <Item title={item.colorName} colorCode={item.hexCode} />
-            )
-    };
-    return (
-        <View>
-            <TouchableOpacity onPress={() => navigation.navigate('ColorPalette', { paletteName: name, colors: scheme })}>
-                <Text style={{ marginLeft: 20, fontSize: 15 }}>{name}</Text>
-                <FlatList
-                    contentContainerStyle={{ justifyContent: "space-around" }}
-                    data={scheme}
-                    renderItem={renderItem}
-                    keyExtractor={item => item.colorName}
-                    horizontal={true}
-                />
-            </TouchableOpacity>
-        </View>
-    )
-}
-const styles = StyleSheet.create({
-    panelItem: {
-        padding: 20,
-        margin: 20,
-        borderRadius: 20,
-    }
-})
 
 export default Home
