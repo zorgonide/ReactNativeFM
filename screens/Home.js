@@ -1,6 +1,7 @@
-import { SafeAreaView, RefreshControl, FlatList } from 'react-native'
+import { SafeAreaView, RefreshControl, FlatList, Text } from 'react-native'
 import React, { useState, useCallback, useEffect } from 'react'
 import HomePanels from '../components/HomePanels';
+import { TouchableOpacity } from 'react-native-gesture-handler';
 
 const Home = ({ navigation }) => {
     const [palettes, setPalettes] = useState([]);
@@ -32,6 +33,11 @@ const Home = ({ navigation }) => {
                 )}
                 refreshing={isRefreshing}
                 onRefresh={handleRefresh}
+                ListHeaderComponent={
+                    <TouchableOpacity onPress={() => { navigation.navigate("Color Palette Modal") }}>
+                        <Text>Launch Modal</Text>
+                    </TouchableOpacity>
+                }
             />
         </SafeAreaView>
     )
