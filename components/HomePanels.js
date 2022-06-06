@@ -17,7 +17,7 @@ const HomePanels = ({ scheme, navigation, name }) => {
     return (
         <View>
             <TouchableOpacity onPress={() => navigation.navigate('ColorPalette', { paletteName: name, colors: scheme })}>
-                <Text style={{ marginRight: 20, fontSize: 16, fontWeight: "400", textAlign: "right" }}>{name}</Text>
+                <Text style={{ marginRight: 20, fontSize: 16, fontWeight: "400", marginLeft: 10 }}>{name}</Text>
                 <FlatList
                     contentContainerStyle={{ justifyContent: "space-around", flex: 1, marginVertical: 20 }}
                     data={previewScheme}
