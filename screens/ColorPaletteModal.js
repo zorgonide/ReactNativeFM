@@ -1,4 +1,4 @@
-import { StyleSheet, Text, View, TextInput, Switch, FlatList } from 'react-native'
+import { StyleSheet, Text, View, TextInput, Switch, FlatList, Button, Alert, Pressable } from 'react-native'
 import React, { useState } from 'react'
 import { COLORS } from '../assets/COLORS'
 
@@ -11,9 +11,18 @@ const sampleColorPanel = {
     ]
 }
 
-const SwitchPanel = ({ colorName, hexCode }) => {
+const SwitchPanel = ({ colorName, hexCode, updateSelectedColors, selectedColors }) => {
     const [isEnabled, setIsEnabled] = useState(false);
-    const toggleSwitch = () => setIsEnabled(previousState => !previousState);
+    const toggleSwitch = () => {
+        setIsEnabled(previousState => !previousState)
+        if (isEnabled) {
+            updateSelectedColors(oldArray => [...oldArray, { colorName: colorName, hexCode: hexCode }])
+        }
+        else {
+            // remove element from array
+            updateSelectedColors(selectedColors.filter(element => element.colorName != colorName))
+        }
+    };
     return (
         <View style={styles.switchBox}>
             <Text style={styles.textLabel}>{colorName}</Text>
@@ -34,22 +43,35 @@ const ColorPaletteModal = ({ route }) => {
     const updateArray = (colorPanel) => {
         route.params.setPalettesFunction(oldArray => [...oldArray, colorPanel])
     }
-
+    const addToPalette = () => {
+        if (selectedColors.length > 3 && text.length > 3) {
+            let sampleColorPanel = {
+                paletteName: text,
+                colors: selectedColors
+            }
+            updateArray(sampleColorPanel)
+        }
+        else Alert.alert("woops")
+    }
     const [text, onChangeText] = useState(null);
+    const [selectedColors, updateSelectedColors] = useState([]);
     return (
-        <View>
+        <View style={{ flex: 1 }}>
             <TextInput
                 style={[styles.input,]}
                 onChangeText={onChangeText}
                 value={text}
                 placeholder="Enter Color Name"
-                keyboardType="text"
+                keyboardType="default"
             />
             <FlatList
                 data={COLORS}
                 keyExtractor={item => item.colorName}
-                renderItem={({ item }) => <SwitchPanel hexCode={item.hexCode} colorName={item.colorName}></SwitchPanel>}
+                renderItem={({ item }) => <SwitchPanel hexCode={item.hexCode} colorName={item.colorName} updateSelectedColors={updateSelectedColors} selectedColors={selectedColors}></SwitchPanel>}
             />
+            <Pressable style={styles.button} onPress={() => { Alert.alert("Woooo") }}>
+                <Text style={styles.text}>Add to Palette</Text>
+            </Pressable>
         </View>
     )
 }
@@ -78,5 +100,22 @@ const styles = StyleSheet.create({
     },
     switch: {
         flex: 1,
-    }
+    },
+    button: {
+        alignItems: 'center',
+        justifyContent: 'center',
+        paddingVertical: 12,
+        margin: 5,
+        paddingHorizontal: 32,
+        borderRadius: 4,
+        elevation: 3,
+        backgroundColor: '#9ACD',
+    },
+    text: {
+        fontSize: 16,
+        lineHeight: 21,
+        fontWeight: 'bold',
+        letterSpacing: 0.25,
+        color: 'white',
+    },
 })
