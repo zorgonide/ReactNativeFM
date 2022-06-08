@@ -17,7 +17,7 @@ const SwitchPanel = ({ colorName, hexCode, updateSelectedColors, selectedColors 
     return (
         <View style={styles.switchBox}>
             <Text style={styles.textLabel}>{colorName}</Text>
-            <View style={styles.switch}>
+            <View>
                 <Switch
                     trackColor={{ false: "#767577", true: hexCode }}
                     thumbColor={isEnabled ? hexCode : "#f4f3f4"}
@@ -84,16 +84,14 @@ const styles = StyleSheet.create({
     },
     switchBox: {
         flexDirection: "row",
-        display: "flex"
-    },
-    textLabel: {
-        flex: 3,
+        justifyContent: "space-between",
         alignItems: "center",
-        fontSize: 18,
+        borderBottomColor: "grey",
+        borderBottomWidth: 0.5,
         padding: 10
     },
-    switch: {
-        flex: 1,
+    textLabel: {
+        fontSize: 18,
     },
     button: {
         alignItems: 'center',
@@ -103,7 +101,7 @@ const styles = StyleSheet.create({
         paddingHorizontal: 32,
         borderRadius: 4,
         elevation: 3,
-        backgroundColor: '#9ACD',
+        backgroundColor: 'teal',
     },
     text: {
         fontSize: 16,
