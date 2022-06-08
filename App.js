@@ -1,5 +1,4 @@
 import React from "react";
-import { View, Text, StyleSheet, SafeAreaView } from "react-native";
 import { NavigationContainer } from '@react-navigation/native';
 import Home from './screens/Home';
 import ColorPalette from './screens/ColorPalette';

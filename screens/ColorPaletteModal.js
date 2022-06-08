@@ -2,20 +2,11 @@ import { StyleSheet, Text, View, TextInput, Switch, FlatList, Button, Alert, Pre
 import React, { useState } from 'react'
 import { COLORS } from '../assets/COLORS'
 
-const sampleColorPanel = {
-    paletteName: "Sample",
-    colors: [
-        { colorName: 'MediumTurquoise', hexCode: '#48D1CC' },
-        { colorName: 'MediumVioletRed', hexCode: '#C71585' },
-        { colorName: 'MidnightBlue', hexCode: '#191970' },
-    ]
-}
-
 const SwitchPanel = ({ colorName, hexCode, updateSelectedColors, selectedColors }) => {
     const [isEnabled, setIsEnabled] = useState(false);
     const toggleSwitch = () => {
         setIsEnabled(previousState => !previousState)
-        if (isEnabled) {
+        if (!isEnabled) {
             updateSelectedColors(oldArray => [...oldArray, { colorName: colorName, hexCode: hexCode }])
         }
         else {
@@ -39,7 +30,7 @@ const SwitchPanel = ({ colorName, hexCode, updateSelectedColors, selectedColors 
     )
 }
 
-const ColorPaletteModal = ({ route }) => {
+const ColorPaletteModal = ({ route, navigation }) => {
     const updateArray = (colorPanel) => {
         route.params.setPalettesFunction(oldArray => [...oldArray, colorPanel])
     }
@@ -50,10 +41,13 @@ const ColorPaletteModal = ({ route }) => {
                 colors: selectedColors
             }
             updateArray(sampleColorPanel)
+            navigation.navigate('Home')
         }
-        else Alert.alert("woops")
+        else if (selectedColors.length < 4)
+            Alert.alert("Woops choose more colors")
+        else Alert.alert("Enter color name greater than 3 characters")
     }
-    const [text, onChangeText] = useState(null);
+    const [text, onChangeText] = useState("");
     const [selectedColors, updateSelectedColors] = useState([]);
     return (
         <View style={{ flex: 1 }}>
@@ -69,7 +63,7 @@ const ColorPaletteModal = ({ route }) => {
                 keyExtractor={item => item.colorName}
                 renderItem={({ item }) => <SwitchPanel hexCode={item.hexCode} colorName={item.colorName} updateSelectedColors={updateSelectedColors} selectedColors={selectedColors}></SwitchPanel>}
             />
-            <Pressable style={styles.button} onPress={() => { Alert.alert("Woooo") }}>
+            <Pressable style={styles.button} onPress={addToPalette}>
                 <Text style={styles.text}>Add to Palette</Text>
             </Pressable>
         </View>

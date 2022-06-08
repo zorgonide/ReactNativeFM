@@ -1,4 +1,4 @@
-import { SafeAreaView, RefreshControl, FlatList, Text, StyleSheet } from 'react-native'
+import { SafeAreaView, FlatList, Text, StyleSheet } from 'react-native'
 import React, { useState, useCallback, useEffect } from 'react'
 import HomePanels from '../components/HomePanels';
 import { TouchableOpacity } from 'react-native-gesture-handler';
