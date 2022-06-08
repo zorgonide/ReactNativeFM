@@ -1,54 +1,58 @@
 import { StyleSheet, Text, View, TextInput, Switch, FlatList, Button, Alert, Pressable } from 'react-native'
-import React, { useState } from 'react'
+import React, { useState, useCallback } from 'react'
 import { COLORS } from '../assets/COLORS'
 
-const SwitchPanel = ({ colorName, hexCode, updateSelectedColors, selectedColors }) => {
-    const [isEnabled, setIsEnabled] = useState(false);
-    const toggleSwitch = () => {
-        setIsEnabled(previousState => !previousState)
-        if (!isEnabled) {
-            updateSelectedColors(oldArray => [...oldArray, { colorName: colorName, hexCode: hexCode }])
-        }
-        else {
-            // remove element from array
-            updateSelectedColors(selectedColors.filter(element => element.colorName != colorName))
-        }
-    };
-    return (
-        <View style={styles.switchBox}>
-            <Text style={styles.textLabel}>{colorName}</Text>
-            <View>
-                <Switch
-                    trackColor={{ false: "#767577", true: hexCode }}
-                    thumbColor={isEnabled ? hexCode : "#f4f3f4"}
-                    ios_backgroundColor="#3e3e3e"
-                    onValueChange={toggleSwitch}
-                    value={isEnabled}
-                />
-            </View>
-        </View>
-    )
-}
 
-const ColorPaletteModal = ({ route, navigation }) => {
-    const updateArray = (colorPanel) => {
-        route.params.setPalettesFunction(oldArray => [...oldArray, colorPanel])
+
+const ColorPaletteModal = ({ navigation }) => {
+    const [text, onChangeText] = useState("");
+    const [selectedColors, updateSelectedColors] = useState([]);
+
+    const handleUpdate = useCallback(
+        (color, newValue) => {
+            if (newValue === true) {
+                updateSelectedColors(current => [...current, color]);
+            } else {
+                updateSelectedColors(current =>
+                    current.filter(c => c.colorName !== color.colorName),
+                );
+            }
+        },
+        [selectedColors, updateSelectedColors],
+    );
+
+    const SwitchPanel = ({ colorName, hexCode }) => {
+        let isEnabled = !!selectedColors.find(color => color.colorName === colorName)
+        return (
+            <View style={styles.switchBox}>
+                <Text style={styles.textLabel}>{colorName}</Text>
+                <View>
+                    <Switch
+                        trackColor={{ false: "#767577", true: hexCode }}
+                        thumbColor={isEnabled ? hexCode : "#f4f3f4"}
+                        ios_backgroundColor="#3e3e3e"
+                        value={isEnabled}
+                        onValueChange={newValue => handleUpdate({ colorName, hexCode }, newValue)}
+                    />
+                </View>
+            </View>
+        )
     }
+
     const addToPalette = () => {
         if (selectedColors.length > 3 && text.length > 3) {
             let sampleColorPanel = {
                 paletteName: text,
                 colors: selectedColors
             }
-            updateArray(sampleColorPanel)
-            navigation.navigate('Home')
+            // updateArray(sampleColorPanel)
+            navigation.navigate('Home', { newPalette: sampleColorPanel })
         }
         else if (selectedColors.length < 4)
             Alert.alert("Woops choose more colors")
         else Alert.alert("Enter color name greater than 3 characters")
     }
-    const [text, onChangeText] = useState("");
-    const [selectedColors, updateSelectedColors] = useState([]);
+
     return (
         <View style={{ flex: 1 }}>
             <TextInput
@@ -61,7 +65,7 @@ const ColorPaletteModal = ({ route, navigation }) => {
             <FlatList
                 data={COLORS}
                 keyExtractor={item => item.colorName}
-                renderItem={({ item }) => <SwitchPanel hexCode={item.hexCode} colorName={item.colorName} updateSelectedColors={updateSelectedColors} selectedColors={selectedColors}></SwitchPanel>}
+                renderItem={({ item }) => <SwitchPanel hexCode={item.hexCode} colorName={item.colorName}></SwitchPanel>}
             />
             <Pressable style={styles.button} onPress={addToPalette}>
                 <Text style={styles.text}>Add to Palette</Text>

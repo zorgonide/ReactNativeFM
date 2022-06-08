@@ -3,7 +3,8 @@ import React, { useState, useCallback, useEffect } from 'react'
 import HomePanels from '../components/HomePanels';
 import { TouchableOpacity } from 'react-native-gesture-handler';
 
-const Home = ({ navigation }) => {
+const Home = ({ navigation, route }) => {
+    const newPalette = route.params ? route.params.newPalette : null;
     const [palettes, setPalettes] = useState([]);
     const [isRefreshing, setIsRefreshing] = useState(false);
     const handleFetchPalettes = useCallback(async () => {
@@ -16,6 +17,11 @@ const Home = ({ navigation }) => {
     useEffect(() => {
         handleFetchPalettes();
     }, []);
+    useEffect(() => {
+        if (newPalette) {
+            setPalettes(current => [newPalette, ...current]);
+        }
+    }, [newPalette]);
     const handleRefresh = useCallback(async () => {
         setIsRefreshing(true);
         await handleFetchPalettes();
@@ -34,7 +40,7 @@ const Home = ({ navigation }) => {
                 refreshing={isRefreshing}
                 onRefresh={handleRefresh}
                 ListHeaderComponent={
-                    <TouchableOpacity onPress={() => { navigation.navigate("Color Palette Modal", { palettes: palettes, setPalettesFunction: setPalettes }) }}>
+                    <TouchableOpacity onPress={() => { navigation.navigate("Color Palette Modal", { palettes: palettes }) }}>
                         <Text style={styles.addButton}>+</Text>
                     </TouchableOpacity>
                 }
